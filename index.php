@@ -1,65 +1,81 @@
 <?php
-// ファイルのパス設定
-define('FILENAME', './message.txt');
 
 //タイムゾーン設定
 date_default_timezone_set('Asia/Tokyo');
 
-$message = [];
-$message_data = [];
 $error_message = [];
-$clean = [];
 
+//データベースに接続
+try {
+  $option = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
+  ];
+  $pdo = new PDO('mysql:charset=UTF8;dbname=board;host=localhost;', 'root', 'root', $option);
+} catch (PDOException $e) {
+  //接続エラーの時のエラー内容を取得
+  $error_message[] = $e->getMessage();
+}
 
 if (!empty($_POST['btn_submit'])) {
   //投稿バリデーション
+  $title = preg_replace('/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $_POST['title']);
+
+  $message = preg_replace('/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $_POST['message']);
+
   //表示名のフォームチェック
-  if (empty($_POST['title'])) {
+  if (empty($title)) {
     $error_message[] = '表示名を入力してください';
-  } else {
-    $clean['title'] = htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8');
-    $clean['title'] = preg_replace('/\\r\\n|\\n|\\r/', '', $clean['title']);
   }
 
   //メッセージのフォームチェック
-  if (empty($_POST['message'])) {
+  if (empty($message)) {
     $error_message[] = 'メッセージを入力してください';
-  } else {
-    $clean['message'] = htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8');
-    $clean['message'] = preg_replace('/\\r\\n|\\n|\\r/', '<br>', $clean['message']);
   }
 
 
   if (empty($error_message)) {
-    if ($file_handle = fopen(FILENAME, "a")) {
-      $current_date = date("Y-m-d H:i:s");
+    //日付取得
+    $current_date = date("Y-m-d H:i:s");
 
-      $data =
-        "'" . $clean['title'] . "','" . $clean['message'] . "','" . $current_date . "'\n";
+    $pdo->beginTransaction();
 
-      fwrite($file_handle, $data);
-      fclose($file_handle);
+    try {
+      //SQL文を作成
+      $stmt = $pdo->prepare("INSERT INTO messages (title, message, post_date) VALUES (:title, :message, :current_date)");
 
+      //値をセット
+      $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+      $stmt->bindParam(':message', $message, PDO::PARAM_STR);
+      $stmt->bindParam(':current_date', $current_date, PDO::PARAM_STR);
+
+      // SQLクエリの実行
+      $stmt->execute();
+
+      //コミット
+      $res = $pdo->commit();
+    } catch (Exception $e) {
+      //エラーが有った場合
+      $pdo->rollBack();
+    }
+
+    if ($res) {
       $success_message = 'メッセージを書き込みました';
-    }
-  }
-
-  if ($file_handle = fopen(FILENAME, "r")) {
-    while ($data = fgets($file_handle)) {
-      $split_data = preg_split('/\'/', $data);
-
-      $message = [
-        'title' => $split_data[1],
-        'message' => $split_data[3],
-        'post_data' => $split_data[5],
-      ];
-
-      array_unshift($message_data, $message);
+    } else {
+      $error_message[] = '書き込みに失敗しました';
     }
 
-    fclose($file_handle);
+    $stmt = null;
   }
 }
+
+if (!empty($pdo)) {
+  $sql = "SELECT * FROM messages ORDER BY post_date DESC";
+  $message_data = $pdo->query($sql);
+}
+
+$pdo = null;
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -112,7 +128,7 @@ if (!empty($_POST['btn_submit'])) {
                 <span class="title"><?php echo $value['title']; ?></span><span class="time"><?php echo $value['post_data']; ?></span>
               </p>
               <p class="message">
-                <?php echo $value['message']; ?>
+                <?php echo nl2br($value['message']); ?>
               </p>
             </li>
           <?php endforeach; ?>
