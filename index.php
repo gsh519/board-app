@@ -5,6 +5,8 @@ date_default_timezone_set('Asia/Tokyo');
 
 $error_message = [];
 
+session_start();
+
 //データベースに接続
 try {
   $option = [
@@ -26,6 +28,8 @@ if (!empty($_POST['btn_submit'])) {
   //表示名のフォームチェック
   if (empty($title)) {
     $error_message[] = '表示名を入力してください';
+  } else {
+    $_SESSION['title'] = $title;
   }
 
   //メッセージのフォームチェック
@@ -98,7 +102,9 @@ $pdo = null;
       <form action="" method="POST">
         <div class="title-area">
           <label for="title">表示名</label>
-          <input type="text" id="title" name="title" value="">
+          <input type="text" id="title" name="title" value="<?php if (!empty($_SESSION['title'])) {
+                                                              echo htmlspecialchars($_SESSION['title'], ENT_QUOTES, 'UTF-8');
+                                                            } ?>">
         </div>
         <div class="message-area">
           <label for="message">メッセージ</label>
