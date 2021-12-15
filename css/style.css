@@ -65,6 +65,14 @@ textarea {
   margin-bottom: 24px;
 }
 
+.form-area .error-list {
+  padding: 8px 16px;
+  color: #df5858;
+  border: 1px solid #df5858;
+  margin-top: 16px;
+  border-radius: 10px;
+}
+
 .comment-area .success-message {
   padding: 8px 16px;
   color: #88d688;

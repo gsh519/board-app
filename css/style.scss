@@ -67,6 +67,14 @@ textarea {
   .message-area {
     margin-bottom: 24px;
   }
+
+  .error-list {
+    padding: 8px 16px;
+    color: rgb(223, 88, 88);
+    border: 1px solid rgb(223, 88, 88);
+    margin-top: 16px;
+    border-radius: 10px;
+  }
 }
 
 .comment-area {

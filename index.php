@@ -7,17 +7,41 @@ date_default_timezone_set('Asia/Tokyo');
 
 $message = [];
 $message_data = [];
+$error_message = [];
+$clean = [];
 
 
 if (!empty($_POST['btn_submit'])) {
-  if ($file_handle = fopen(FILENAME, "a")) {
-    $current_date = date("Y-m-d H:i:s");
+  //投稿バリデーション
+  //表示名のフォームチェック
+  if (empty($_POST['title'])) {
+    $error_message[] = '表示名を入力してください';
+  } else {
+    $clean['title'] = htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8');
+    $clean['title'] = preg_replace('/\\r\\n|\\n|\\r/', '', $clean['title']);
+  }
 
-    $data =
-      "'" . $_POST['title'] . "','" . $_POST['message'] . "','" . $current_date . "'\n";
+  //メッセージのフォームチェック
+  if (empty($_POST['message'])) {
+    $error_message[] = 'メッセージを入力してください';
+  } else {
+    $clean['message'] = htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8');
+    $clean['message'] = preg_replace('/\\r\\n|\\n|\\r/', '<br>', $clean['message']);
+  }
 
-    fwrite($file_handle, $data);
-    fclose($file_handle);
+
+  if (empty($error_message)) {
+    if ($file_handle = fopen(FILENAME, "a")) {
+      $current_date = date("Y-m-d H:i:s");
+
+      $data =
+        "'" . $clean['title'] . "','" . $clean['message'] . "','" . $current_date . "'\n";
+
+      fwrite($file_handle, $data);
+      fclose($file_handle);
+
+      $success_message = 'メッセージを書き込みました';
+    }
   }
 
   if ($file_handle = fopen(FILENAME, "r")) {
@@ -34,8 +58,6 @@ if (!empty($_POST['btn_submit'])) {
     }
 
     fclose($file_handle);
-
-    $success_message = 'メッセージを書き込みました';
   }
 }
 ?>
@@ -68,6 +90,13 @@ if (!empty($_POST['btn_submit'])) {
         </div>
         <input type="submit" id="btn_submit" name="btn_submit" value="書き込む">
       </form>
+      <?php if (!empty($error_message)) : ?>
+        <ul>
+          <?php foreach ($error_message as $value) : ?>
+            <li class="error-list"><?php echo $value; ?></li>
+          <?php endforeach; ?>
+        </ul>
+      <?php endif; ?>
     </div>
   </div>
   <div class="comment-area">
