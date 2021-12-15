@@ -70,6 +70,14 @@ textarea {
 }
 
 .comment-area {
+  .success-message {
+    padding: 8px 16px;
+    color: #88d688;
+    border: 1px solid #88d688;
+    margin-top: 16px;
+    border-radius: 10px;
+  }
+
   .list {
     background-color: #fff;
     padding: 24px;

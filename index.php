@@ -34,6 +34,8 @@ if (!empty($_POST['btn_submit'])) {
     }
 
     fclose($file_handle);
+
+    $success_message = 'メッセージを書き込みました';
   }
 }
 ?>
@@ -46,7 +48,7 @@ if (!empty($_POST['btn_submit'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>掲示板</title>
   <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/style.min.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
@@ -70,6 +72,9 @@ if (!empty($_POST['btn_submit'])) {
   </div>
   <div class="comment-area">
     <div class="wrapper">
+      <?php if (!empty($success_message)) : ?>
+        <p class="success-message"><?php echo $success_message; ?></p>
+      <?php endif; ?>
       <ul>
         <?php if (!empty($message_data)) : ?>
           <?php foreach ($message_data as $value) : ?>
