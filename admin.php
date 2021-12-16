@@ -64,6 +64,11 @@ $pdo = null;
     </div>
   </div>
   <form action="./download.php" method="get">
+    <select name="limit">
+      <option value="">全て</option>
+      <option value="10">10件</option>
+      <option value="20">20件</option>
+    </select>
     <input type="submit" name="btn_download" value="ダウンロード">
   </form>
   <div class="comment-area">

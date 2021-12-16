@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+if (!empty($_GET['limit'])) {
+  if ($_GET['limit'] === "10") {
+    $limit = 10;
+  } elseif ($_GET['limit'] === "20") {
+    $limit = 20;
+  }
+}
+
 if (!empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true) {
   // 投稿データ取得
   try {
@@ -10,9 +18,18 @@ if (!empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true) {
     ];
     $pdo = new PDO('mysql:charset=UTF8;dbname=board;host=localhost;', 'root', 'root', $option);
 
-    $sql = "SELECT * FROM messages ORDER BY post_date DESC";
-    $message_data = $pdo->query($sql);
+    if (!empty($_GET['limit'])) {
+      //SQLの作成
+      $stmt = $pdo->prepare("SELECT * FROM messages ORDER BY post_date DESC LIMIT :limit");
+      $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    } else {
+      $stmt = $pdo->prepare("SELECT * FROM messages ORDER BY post_date DESC");
+    }
 
+    $stmt->execute();
+    $message_data = $stmt->fetchAll();
+
+    $stmt = null;
     $pdo = null;
   } catch (PDOException $e) {
     header("Location: ./admin.php");
