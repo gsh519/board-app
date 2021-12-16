@@ -45,7 +45,7 @@ $pdo = null;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>掲示板 管理者ページ</title>
   <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/style.min.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
@@ -61,16 +61,16 @@ $pdo = null;
           <?php endforeach; ?>
         </ul>
       <?php endif; ?>
+      <form action="./download.php" method="get">
+        <select class="limit" name="limit">
+          <option value="">全て</option>
+          <option value="10">10件</option>
+          <option value="20">20件</option>
+        </select>
+        <input type="submit" id="btn_download" name="btn_download" value="ダウンロード">
+      </form>
     </div>
   </div>
-  <form action="./download.php" method="get">
-    <select name="limit">
-      <option value="">全て</option>
-      <option value="10">10件</option>
-      <option value="20">20件</option>
-    </select>
-    <input type="submit" name="btn_download" value="ダウンロード">
-  </form>
   <div class="comment-area">
     <div class="wrapper">
       <ul>
@@ -78,6 +78,7 @@ $pdo = null;
           <?php if (!empty($message_data)) : ?>
             <?php foreach ($message_data as $value) : ?>
               <li class="list">
+                <p class="list__touch"><a class="btn_blue" href="edit.php?message_id=<?php echo $value['id']; ?>">編集</a> <a class="btn_blue" href="delete.php?message_id=<?php echo $value['id']; ?>">削除</a></p>
                 <p class="head">
                   <span class="title"><?php echo $value['title']; ?></span><span class="time"><?php echo $value['post_data']; ?></span>
                 </p>
