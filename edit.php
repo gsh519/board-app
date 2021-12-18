@@ -54,6 +54,11 @@ if (!empty($_GET['message_id']) && empty($_POST['message_id'])) {
 
   if (empty($_POST['message'])) {
     $error_message[] = 'メッセージを入力してください';
+  } else {
+    // 文字数を確認
+    if (100 < mb_strlen($message, 'UTF-8')) {
+      $error_message[] = '一言メッセージは100文字以内にしてください';
+    }
   }
 
   if (empty($error_message)) {

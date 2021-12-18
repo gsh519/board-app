@@ -54,10 +54,19 @@ $pdo = null;
 
 <body>
   <header class="header">
-    <h1>掲示板 管理者ページ</h1>
+    <h1>
+      <a class="admin_ttl" href="./index.php">
+        掲示板 管理者ページ
+      </a>
+    </h1>
   </header>
   <div class="form-area">
     <div class="wrapper form-area__inner">
+      <?php if (!empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true) : ?>
+        <form action="" method="get">
+          <input type="submit" id="btn_logout" name="btn_logout" value="ログアウト">
+        </form>
+      <?php endif; ?>
       <?php if (!empty($error_message)) : ?>
         <ul>
           <?php foreach ($error_message as $value) : ?>
@@ -92,9 +101,6 @@ $pdo = null;
               </li>
             <?php endforeach; ?>
           <?php endif; ?>
-          <form action="" method="get">
-            <input type="submit" id="btn_logout" name="btn_logout" value="ログアウト">
-          </form>
         <?php else : ?>
           <!-- ログインフォームの設置 -->
           <form action="" method="post">

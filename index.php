@@ -35,6 +35,10 @@ if (!empty($_POST['btn_submit'])) {
   //メッセージのフォームチェック
   if (empty($message)) {
     $error_message[] = 'メッセージを入力してください';
+  } else {
+    if (mb_strlen($message, 'UTF-8') > 100) {
+      $error_message[] = '一言メッセージは100文字以内にしてください';
+    }
   }
 
 
@@ -102,6 +106,7 @@ $pdo = null;
   </header>
   <div class="form-area">
     <div class="wrapper form-area__inner">
+      <a class="btn_gray" href="./admin.php">管理者ページへ</a>
       <form action="" method="POST">
         <div class="title-area">
           <label for="title">表示名</label>
@@ -111,7 +116,9 @@ $pdo = null;
         </div>
         <div class="message-area">
           <label for="message">メッセージ</label>
-          <textarea id="message" name="message"></textarea>
+          <textarea id="message" name="message"><?php if (!empty($message)) {
+                                                  echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+                                                } ?></textarea>
         </div>
         <input type="submit" id="btn_submit" name="btn_submit" value="書き込む">
       </form>
