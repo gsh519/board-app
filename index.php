@@ -64,12 +64,15 @@ if (!empty($_POST['btn_submit'])) {
     }
 
     if ($res) {
-      $success_message = 'メッセージを書き込みました';
+      $_SESSION['success_message'] = 'メッセージを書き込みました';
     } else {
       $error_message[] = '書き込みに失敗しました';
     }
 
     $stmt = null;
+
+    header("Location: ./");
+    exit;
   }
 }
 
@@ -123,8 +126,9 @@ $pdo = null;
   </div>
   <div class="comment-area">
     <div class="wrapper">
-      <?php if (!empty($success_message)) : ?>
-        <p class="success-message"><?php echo $success_message; ?></p>
+      <?php if (empty($_POST['btn_submit']) && !empty($_SESSION['success_message'])) : ?>
+        <p class="success-message"><?php echo htmlspecialchars($_SESSION['success_message'], ENT_QUOTES, 'UTF-8'); ?></p>
+        <?php unset($_SESSION['success_message']); ?>
       <?php endif; ?>
       <ul>
         <?php if (!empty($message_data)) : ?>

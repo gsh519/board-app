@@ -8,6 +8,10 @@ $error_message = [];
 
 session_start();
 
+if (!empty($_GET['btn_logout'])) {
+  unset($_SESSION['admin_login']);
+}
+
 //データベースに接続
 try {
   $option = [
@@ -45,7 +49,7 @@ $pdo = null;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>掲示板 管理者ページ</title>
   <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style.min.css">
 </head>
 
 <body>
@@ -88,6 +92,9 @@ $pdo = null;
               </li>
             <?php endforeach; ?>
           <?php endif; ?>
+          <form action="" method="get">
+            <input type="submit" id="btn_logout" name="btn_logout" value="ログアウト">
+          </form>
         <?php else : ?>
           <!-- ログインフォームの設置 -->
           <form action="" method="post">
