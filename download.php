@@ -1,4 +1,9 @@
 <?php
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', 'root');
+define('DB_NAME', 'board');
+
 session_start();
 
 if (!empty($_GET['limit'])) {
@@ -16,7 +21,7 @@ if (!empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true) {
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
       PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
     ];
-    $pdo = new PDO('mysql:charset=UTF8;dbname=board;host=localhost;', 'root', 'root', $option);
+    $pdo = new PDO('mysql:charset=UTF8;dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, $option);
 
     if (!empty($_GET['limit'])) {
       //SQLの作成
