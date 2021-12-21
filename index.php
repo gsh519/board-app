@@ -1,15 +1,12 @@
 <?php
 
-// define('DB_HOST', 'localhost');
-// define('DB_USER', 'root');
-// define('DB_PASS', 'root');
-// define('DB_NAME', 'board');
 $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
-$db_name = substr($url['path'], 1);
+$db_name = substr($url["path"], 1);
 $db_host = $url["host"];
 $user = $url["user"];
 $password = $url["pass"];
+
 $dsn = "mysql:dbname=" . $db_name . ";host=" . $db_host;
 
 //タイムゾーン設定
