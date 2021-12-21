@@ -25,11 +25,6 @@ session_start();
 //データベースに接続
 try {
   dbConnect();
-  // $option = [
-  //   PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-  //   PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
-  // ];
-  // $pdo = new PDO('mysql:charset=UTF8;dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, $option);
 } catch (PDOException $e) {
   //接続エラーの時のエラー内容を取得
   $error_message[] = $e->getMessage();
@@ -81,6 +76,7 @@ if (!empty($_POST['btn_submit'])) {
     } catch (Exception $e) {
       //エラーが有った場合
       $pdo->rollBack();
+      var_dump($e->getMessage());
     }
 
     if ($res) {
