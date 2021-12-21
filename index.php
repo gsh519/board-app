@@ -1,9 +1,10 @@
 <?php
 
-$host = getenv('DB_HOSTNAME');
-$user = getenv('DB_USERNAME');
-$pass = getenv('DB_PASSWORD');
-$dbName = getenv('DB_NAME');
+// define('DB_HOST', 'localhost');
+// define('DB_USER', 'root');
+// define('DB_PASS', 'root');
+// define('DB_NAME', 'board');
+
 
 //タイムゾーン設定
 date_default_timezone_set('Asia/Tokyo');
@@ -18,7 +19,7 @@ try {
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
   ];
-  $pdo = new PDO('mysql:charset=UTF8;dbname=' . $dbName . ';host=' . $host, $user, $pass, $option);
+  $pdo = new PDO('mysql:charset=UTF8;dbname=' . DB_NAME . ';host=' . DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, $option);
 } catch (PDOException $e) {
   //接続エラーの時のエラー内容を取得
   $error_message[] = $e->getMessage();
