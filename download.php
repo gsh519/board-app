@@ -1,20 +1,9 @@
 <?php
 
-function dbConnect()
-{
-  $db = parse_url($_SERVER['CLEARDB_DATABASE_URL']);
-  $db['dbname'] = ltrim($db['path'], '/');
-  $dsn = "mysql:host={$db['host']};dbname={$db['dbname']};charset=utf8";
-  $user = $db['user'];
-  $password = $db['pass'];
-  $options = array(
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
-  );
-  $pdo = new PDO($dsn, $user, $password, $options);
-  return $pdo;
-}
+$dbName = $_SERVER['DB_NAME'];
+$host = $_SERVER['DB_HOST'];
+$user = $_SERVER['DB_USER'];
+$pass = $_SERVER['DB_PASS'];
 
 session_start();
 
@@ -29,7 +18,11 @@ if (!empty($_GET['limit'])) {
 if (!empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true) {
   // 投稿データ取得
   try {
-    dbConnect();
+    $option = [
+      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+      PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
+    ];
+    $pdo = new PDO('mysql:charset=UTF8;dbname=' . $dbName . ';host=' . $host, $user, $pass, $option);
 
     if (!empty($_GET['limit'])) {
       //SQLの作成
