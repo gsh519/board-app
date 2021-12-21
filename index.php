@@ -25,7 +25,11 @@ session_start();
 //データベースに接続
 try {
   dbConnect();
-  var_dump($pdo);
+  var_dump($db);
+  var_dump($db['dbname']);
+  var_dump($dsn);
+  var_dump($user);
+  var_dump($password);
 } catch (PDOException $e) {
   //接続エラーの時のエラー内容を取得
   $error_message[] = $e->getMessage();
