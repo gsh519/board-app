@@ -1,5 +1,5 @@
 <?php
-define('PASSWORD', 'adminPassword');
+$login_password = $_SERVER['LOGIN_PASSWORD'];
 $dbName = $_SERVER['DB_NAME'];
 $host = $_SERVER['DB_HOST'];
 $user = $_SERVER['DB_USER'];
@@ -29,7 +29,7 @@ try {
 }
 
 if (!empty($_POST['btn_submit'])) {
-  if (!empty($_POST['admin_password']) && $_POST['admin_password'] === PASSWORD) {
+  if (!empty($_POST['admin_password']) && $_POST['admin_password'] === $login_password) {
     $_SESSION['admin_login'] = true;
   } else {
     $error_message[] = 'ログインに失敗しました';
