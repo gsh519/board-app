@@ -1,7 +1,5 @@
 <?php
 
-require "connectdb.php";
-
 $dbName = $_SERVER['DB_NAME'];
 $host = $_SERVER['DB_HOST'];
 $user = $_SERVER['DB_USER'];

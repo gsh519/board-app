@@ -1,7 +1,4 @@
 <?php
-
-require "connectdb.php";
-
 $login_password = $_SERVER['LOGIN_PASSWORD'];
 $dbName = $_SERVER['DB_NAME'];
 $host = $_SERVER['DB_HOST'];
@@ -19,7 +16,17 @@ if (!empty($_GET['btn_logout'])) {
   unset($_SESSION['admin_login']);
 }
 
-dbConnect($dbName, $host, $user, $pass);
+//データベースに接続
+try {
+  $option = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
+  ];
+  $pdo = new PDO('mysql:charset=UTF8;dbname=' . $dbName . ';host=' . $host, $user, $pass, $option);
+} catch (PDOException $e) {
+  //接続エラーの時のエラー内容を取得
+  $error_message[] = $e->getMessage();
+}
 
 if (!empty($_POST['btn_submit'])) {
   if (!empty($_POST['admin_password']) && $_POST['admin_password'] === $login_password) {
