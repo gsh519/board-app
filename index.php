@@ -2,10 +2,10 @@
 
 require "./dbconnect.php";
 
-$dbName = $_SERVER['DB_NAME'];
-$host = $_SERVER['DB_HOST'];
-$user = $_SERVER['DB_USER'];
-$pass = $_SERVER['DB_PASS'];
+// $dbName = $_SERVER['DB_NAME'];
+// $host = $_SERVER['DB_HOST'];
+// $user = $_SERVER['DB_USER'];
+// $pass = $_SERVER['DB_PASS'];
 
 //タイムゾーン設定
 date_default_timezone_set('Asia/Tokyo');
@@ -14,7 +14,7 @@ $error_message = [];
 
 session_start();
 
-dbConnect($dbName, $host, $user, $pass);
+dbConnect($_SERVER['DB_NAME'], $_SERVER['DB_HOST'], $_SERVER['DB_USER'], $_SERVER['DB_PASS']);
 
 if (!empty($_POST['btn_submit'])) {
   //投稿バリデーション
