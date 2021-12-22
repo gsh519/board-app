@@ -94,58 +94,12 @@ $stmt = null;
 $pdo = null;
 
 ?>
-<!DOCTYPE html>
-<html lang="ja">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>掲示板 投稿編集ページ</title>
-  <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/style.min.css">
-</head>
+<?php
+$title = '掲示板 投稿編集ページ';
+include('header.php');
+?>
 
-<body>
-  <header class="header">
-    <h1>掲示板 投稿編集ページ</h1>
-  </header>
-  <div class="form-area">
-    <div class="wrapper form-area__inner">
-      <form action="" method="POST">
-        <div class="title-area">
-          <label for="title">表示名</label>
-          <input type="text" id="title" name="title" value="<?php if (!empty($message_data['title'])) {
-                                                              echo $message_data['title'];
-                                                            } elseif (!empty($title)) {
-                                                              echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
-                                                            } ?>">
-        </div>
-        <div class="message-area">
-          <label for="message">メッセージ</label>
-          <textarea id="message" name="message"><?php if (!empty($message_data['message'])) {
-                                                  echo $message_data['message'];
-                                                } elseif (!empty($message)) {
-                                                  echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
-                                                } ?></textarea>
-        </div>
-        <a href="./admin.php" id="btn_cancel">キャンセル</a>
-        <input type="submit" id="btn_submit" name="btn_submit" value="更新">
-        <input type="hidden" name="message_id" value="<?php if (!empty($message_data['id'])) {
-                                                        echo $message_data['id'];
-                                                      } elseif (!empty($_POST['message_id'])) {
-                                                        echo htmlspecialchars($_POST['message_id'], ENT_QUOTES, 'UTF-8');
-                                                      } ?>">
-      </form>
-      <?php if (!empty($error_message)) : ?>
-        <ul>
-          <?php foreach ($error_message as $value) : ?>
-            <li class="error-list"><?php echo $value; ?></li>
-          <?php endforeach; ?>
-        </ul>
-      <?php endif; ?>
-    </div>
-  </div>
-</body>
-
-</html>
+<?php
+include('./contents/edit-content.php');
+?>
