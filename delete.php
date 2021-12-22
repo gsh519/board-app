@@ -1,5 +1,7 @@
 <?php
 
+require "connectdb.php";
+
 $dbName = $_SERVER['DB_NAME'];
 $host = $_SERVER['DB_HOST'];
 $user = $_SERVER['DB_USER'];
@@ -19,17 +21,7 @@ if (empty($_SESSION['admin_login']) || $_SESSION['admin_login'] !== true) {
   exit;
 }
 
-//データベースに接続
-try {
-  $option = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
-  ];
-  $pdo = new PDO('mysql:charset=UTF8;dbname=' . $dbName . ';host=' . $host, $user, $pass, $option);
-} catch (PDOException $e) {
-  //接続エラーの時のエラー内容を取得
-  $error_message[] = $e->getMessage();
-}
+dbConnect($dbName, $host, $user, $pass);
 
 if (!empty($_GET['message_id']) && empty($_POST['message_id'])) {
   // SQL作成
@@ -85,7 +77,7 @@ $pdo = null;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>掲示板 投稿削除</title>
   <link rel="stylesheet" href="./css/reset.css">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style.min.css">
 </head>
 
 <body>
