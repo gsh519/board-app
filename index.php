@@ -1,6 +1,6 @@
 <?php
 
-require "dbconnect.php";
+require "./dbconnect.php";
 
 $dbName = $_SERVER['DB_NAME'];
 $host = $_SERVER['DB_HOST'];
