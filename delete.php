@@ -74,14 +74,10 @@ if (!empty($_GET['message_id']) && empty($_POST['message_id'])) {
 
 $stmt = null;
 $pdo = null;
-
 ?>
 
 <?php
 $title = '掲示板 投稿削除';
 include('header.php');
-?>
-
-<?php
 include('./contents/delete-content.php');
 ?>

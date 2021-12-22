@@ -42,14 +42,10 @@ if (!empty($pdo)) {
 }
 
 $pdo = null;
-
 ?>
 
 <?php
 $title = '掲示板 管理者ページ';
 include('header.php');
-?>
-
-<?php
 include('./contents/admin-content.php');
 ?>

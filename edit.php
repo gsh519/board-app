@@ -92,14 +92,10 @@ if (!empty($_GET['message_id']) && empty($_POST['message_id'])) {
 
 $stmt = null;
 $pdo = null;
-
 ?>
 
 <?php
 $title = '掲示板 投稿編集ページ';
 include('header.php');
-?>
-
-<?php
 include('./contents/edit-content.php');
 ?>
